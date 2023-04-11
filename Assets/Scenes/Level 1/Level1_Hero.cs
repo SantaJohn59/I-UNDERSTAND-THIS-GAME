@@ -7,18 +7,10 @@ public class Level1_Hero : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
 
-    private void Awake()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
-    }
-
-    private void Run()
-    {
-        Vector3 dir = transform.right * Input.GetAxis("Horizontal");
-        transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
-        sprite.flipX = dir.x < 0.0f;
-
     }
 
     void Update()
@@ -27,4 +19,10 @@ public class Level1_Hero : MonoBehaviour
             Run();
     }
 
+    private void Run()
+    {
+        var dirX = Input.GetAxis("Horizontal");
+        rb.velocity = new Vector2(dirX * speed, rb.velocity.y);
+        sprite.flipX = dirX < 0;
+    }
 }

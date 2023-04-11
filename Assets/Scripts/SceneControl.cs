@@ -25,5 +25,10 @@ public class SceneControl : MonoBehaviour
         if (CurrentBestSceneIndex == SceneManager.GetActiveScene().buildIndex)
             CurrentBestSceneIndex++;
     }
+
+    public static void OpenTheLinq(string path)
+    {
+        Application.OpenURL(path);
+    }
     
 }
