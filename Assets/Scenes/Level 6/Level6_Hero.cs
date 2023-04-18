@@ -3,7 +3,7 @@ using UnityEngine;
 public class Level6_Hero : MonoBehaviour
 {
     private float speed = 3f;
-    private float jumpForce = 350f;
+    private float jumpForce = 4f;
     private bool isGrounded;
 
     private Rigidbody2D rb;
@@ -26,6 +26,8 @@ public class Level6_Hero : MonoBehaviour
     {
         if (Input.GetButton("Horizontal"))
             Run();
+
+        IsGroundedUpate();
         if (Input.GetButtonDown("Jump") && isGrounded)
             Jump();
     }
@@ -35,23 +37,13 @@ public class Level6_Hero : MonoBehaviour
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
+    [SerializeField] private Transform GroundCheck;
+    [SerializeField] private LayerMask Ground;
+    private float checkRadius = 0.1f;
 
 
-    void OnCollisionEnter(Collision collision)
+    private void IsGroundedUpate()
     {
-        IsGroundedUpate(collision, true);
-    }
-
-    void OnCollisionExit(Collision collision)
-    {
-        IsGroundedUpate(collision, false);
-    }
-
-    private void IsGroundedUpate(Collision collision, bool value)
-    {
-        if (collision.gameObject.tag == ("Ground"))
-        {
-            isGrounded = value;
-        }
+        isGrounded = Physics2D.OverlapCircle(GroundCheck.position, checkRadius, Ground);
     }
 }

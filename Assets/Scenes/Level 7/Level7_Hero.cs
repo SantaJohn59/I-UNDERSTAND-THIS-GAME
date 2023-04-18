@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class OrdinaryHero : MonoBehaviour
+public class Level7_Hero : MonoBehaviour
 {
     private float speed = 3f;
-    private float jumpForce = 5f;
+    private float jumpForce = 4f;
     private bool isGrounded;
 
     private Rigidbody2D rb;
@@ -28,7 +28,7 @@ public class OrdinaryHero : MonoBehaviour
             Run();
 
         IsGroundedUpate();
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && (isGrounded || ++jumpCount < maxJumpValue))
             Jump();
     }
 
@@ -40,10 +40,12 @@ public class OrdinaryHero : MonoBehaviour
     [SerializeField] private Transform GroundCheck;
     [SerializeField] private LayerMask Ground;
     private float checkRadius = 0.1f;
-
+    private int jumpCount;
+    private int maxJumpValue = 2;
 
     private void IsGroundedUpate()
     {
         isGrounded = Physics2D.OverlapCircle(GroundCheck.position, checkRadius, Ground);
+        if (isGrounded) jumpCount = 0;
     }
 }

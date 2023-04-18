@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Level4_Hero : MonoBehaviour
+public class Level4And5_Hero : MonoBehaviour
 {
     private float speed = 3f;
     private float jumpForce = 4f;
@@ -31,6 +31,6 @@ public class Level4_Hero : MonoBehaviour
 
     private void Jump()
     {
-        rb.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
+        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 }
