@@ -28,7 +28,7 @@ public class Level7_Hero : MonoBehaviour
             Run();
 
         IsGroundedUpate();
-        if (Input.GetButtonDown("Jump") && (isGrounded || ++jumpCount < maxJumpValue))
+        if (Input.GetButtonDown("Jump") && (++jumpCount < maxJumpCount))
             Jump();
     }
 
@@ -41,7 +41,7 @@ public class Level7_Hero : MonoBehaviour
     [SerializeField] private LayerMask Ground;
     private float checkRadius = 0.1f;
     private int jumpCount;
-    private int maxJumpValue = 2;
+    private int maxJumpCount = 2;
 
     private void IsGroundedUpate()
     {

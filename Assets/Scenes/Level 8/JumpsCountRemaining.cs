@@ -1,28 +1,30 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class JumpsCountRemaining : MonoBehaviour
+public class JumpsCountRemaining
 {
-    private static int jumpsCountRemaining = 7;
-    [SerializeField] private TextMeshProUGUI TextAboutJumpsCountRemaining;
+    private int jumpsCountRemaining;
+    private TextMeshProUGUI textAboutJumpsCountRemaining;
+    public bool areJumpsOver = false;
 
-    void Start()
+    public JumpsCountRemaining(int jumpsCountRemaining, TextMeshProUGUI textAboutJumpsCountRemaining)
     {
-        TextAboutJumpsCountRemaining.text = $"Прыжков осталось:{jumpsCountRemaining}";
+        this.jumpsCountRemaining = jumpsCountRemaining;
+        this.textAboutJumpsCountRemaining = textAboutJumpsCountRemaining;
+        textAboutJumpsCountRemaining.text = $"Прыжков осталось: {jumpsCountRemaining}";
         Level8_Hero.OnJump += UpdateJumpsCountRemaining;
     }
 
-    private void UpdateJumpsCountRemaining()
+    public void UpdateJumpsCountRemaining()
     {
-        if (jumpsCountRemaining > 0)
+        jumpsCountRemaining--;
+        textAboutJumpsCountRemaining.text = $"Прыжков осталось: {jumpsCountRemaining}";
+
+        if (jumpsCountRemaining == 0)
         {
-            jumpsCountRemaining--;
-            TextAboutJumpsCountRemaining.text = $"Прыжков осталось:{jumpsCountRemaining}";
-        }
-        else
-        {
+            areJumpsOver = true;
             Level8_Hero.OnJump -= UpdateJumpsCountRemaining;
-            Level8_Hero.JumpsAreOver();
         }
     }
 }

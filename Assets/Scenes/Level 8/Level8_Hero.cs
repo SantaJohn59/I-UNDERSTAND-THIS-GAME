@@ -1,5 +1,7 @@
 using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Level8_Hero : MonoBehaviour
 {
@@ -9,11 +11,14 @@ public class Level8_Hero : MonoBehaviour
 
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
+    private JumpsCountRemaining jc;
+    [SerializeField] private TextMeshProUGUI textAboutJumpsCountRemaining;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
+        jc = new JumpsCountRemaining(7, textAboutJumpsCountRemaining);
     }
 
     private void Run()
@@ -29,33 +34,34 @@ public class Level8_Hero : MonoBehaviour
             Run();
 
         IsGroundedUpate();
-        if (!areJumpsOver && Input.GetButtonDown("Jump") && (isGrounded || ++jumpCount < maxJumpValue))
+        if (!jc.areJumpsOver && Input.GetButtonDown("Jump") && (++jumpsCountAfterGroundTuch < maxJumpValue))
             Jump();
     }
 
     private void Jump()
     {
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        OnJump?.Invoke();
+        OnJump.Invoke();
     }
 
     [SerializeField] private Transform GroundCheck;
     [SerializeField] private LayerMask Ground;
     private float checkRadius = 0.1f;
-    private int jumpCount;
+    private int jumpsCountAfterGroundTuch;
     private int maxJumpValue = 2;
 
     private void IsGroundedUpate()
     {
         isGrounded = Physics2D.OverlapCircle(GroundCheck.position, checkRadius, Ground);
-        if (isGrounded) jumpCount = 0;
-    }
-
-    private static bool areJumpsOver = false;
-    public static void JumpsAreOver()
-    {
-        areJumpsOver = true;
+        if (isGrounded) jumpsCountAfterGroundTuch = 0;
     }
 
     public static Action OnJump;
+
+    public void ReloadLevel()
+    {
+        OnJump -= jc.UpdateJumpsCountRemaining;
+        jc = new JumpsCountRemaining(7, textAboutJumpsCountRemaining);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 }
