@@ -15,6 +15,11 @@ public class SceneControl : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    public static void LoadLevel(int levelNumber)
+    {
+        SceneManager.LoadScene(levelNumber);
+    }
+
     public static void BackToMenu()
     {
         SceneManager.LoadScene(0);
